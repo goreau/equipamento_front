@@ -53,7 +53,7 @@ export default {
             this.municipios = [];
           })
       } else {
-        TerritorioService.getComboMun(this.id_prop)
+        TerritorioService.getComboMun()
           .then((res) => {
             this.municipios = res.data;
           })

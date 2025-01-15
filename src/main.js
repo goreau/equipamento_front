@@ -11,11 +11,11 @@ import '../node_modules/tabulator-tables/dist/css/tabulator_bulma.min.css'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
-import { faUserSecret, faFilePdf, faFileExcel, faFileCsv, faFileLines, faHouse, faUser, faUsers, faLock, faEdit, faTrash, faCheck, faBan, faSearch, faScrewdriverWrench, faSprayCanSparkles, faArrowRightArrowLeft} from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret, faFilePdf, faFileExcel, faFileCsv, faFileLines, faHouse, faUser, faUsers, faLock, faEdit, faTrash, faCheck, faBan, faSearch, faScrewdriverWrench, faSprayCanSparkles, faArrowRightArrowLeft, faBroom, faPlusCircle, faEye, faEyeSlash} from '@fortawesome/free-solid-svg-icons'
 
 
 /* add icons to the library */
-library.add(faUserSecret, faFilePdf, faFileExcel, faFileCsv, faFileLines, faHouse, faUser, faUsers, faLock, faEdit, faTrash, faCheck, faBan, faSearch, faScrewdriverWrench, faSprayCanSparkles, faArrowRightArrowLeft);
+library.add(faUserSecret, faFilePdf, faFileExcel, faFileCsv, faFileLines, faHouse, faUser, faUsers, faLock, faEdit, faTrash, faCheck, faBan, faSearch, faScrewdriverWrench, faSprayCanSparkles, faArrowRightArrowLeft, faBroom, faPlusCircle, faEye, faEyeSlash);
 
 
 createApp(App)

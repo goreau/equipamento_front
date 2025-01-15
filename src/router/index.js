@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
+import { publicPath } from '../../vue.config';
 
 const routes = [
   {
@@ -77,8 +78,18 @@ const routes = [
     component: () => import(/* webpackChunkName: "user" */ '../views/movimento/MovimentoView.vue'),
   },
   {
+    path: '/movimentoEq/:cad',
+    name: 'movimentoEq',
+    component: () => import(/* webpackChunkName: "user" */ '../views/movimento/MovimentoView.vue'),
+  },
+  {
     path: '/movimentos',
     name: 'movimentos',
+    component: () => import(/* webpackChunkName: "user" */ '../views/movimento/ListMovimentoView.vue'),
+  },
+  {
+    path: '/movimentosEq/:id',
+    name: 'movimentosEq',
     component: () => import(/* webpackChunkName: "user" */ '../views/movimento/ListMovimentoView.vue'),
   },
   {
@@ -89,28 +100,49 @@ const routes = [
   {
     path: '/equipMun',
     name: 'equipMun',
-    component: () => import(/* webpackChunkName: "user" */ '../views/equipamento/EquipamentoView.vue'),
+    component: () => import(/* webpackChunkName: "user" */ '../views/equipamun/EquipaMunView.vue'),
   },
   {
     path: '/equipMuns',
     name: 'equipMuns',
-    component: () => import(/* webpackChunkName: "user" */ '../views/equipamento/ListEquipamentoView.vue'),
+    component: () => import(/* webpackChunkName: "user" */ '../views/equipamun/ListEquipaMunView.vue'),
   },
   {
     path: '/editEquipMun/:id',
     name: 'editEquipMun',
-    component: () => import(/* webpackChunkName: "user" */ '../views/equipamento/EditEquipamentoView.vue'),
+    component: () => import(/* webpackChunkName: "user" */ '../views/equipamun/EditEquipaMunView.vue'),
   },
   {
     path: '/listManutencao/:id',
     name: 'listManutencao',
     component: () => import(/* webpackChunkName: "user" */ '../views/manutencao/ListManutencaoView.vue'),
   },
+  {
+    path: '/modelo/:id',
+    name: 'modelo',
+    component: () => import(/* webpackChunkName: "user" */ '../views/manutencao/ModeloView.vue'),
+  },
+  {
+    path: '/auxiliar/:id/:tipo',
+    name: 'auxiliar',
+    component: () => import(/* webpackChunkName: "user" */ '../views/manutencao/AuxiliarView.vue'),
+  },
+  {
+    path: '/mainReport/:id',
+    name: 'mainReport',
+    component: () => import(/* webpackChunkName: "user" */ '../views/report/MainReportView.vue'),
+  },
+  {
+    path: '/report/:id',
+    name: 'report',
+    component: () => import(/* webpackChunkName: "user" */ '../views/report/ReportView.vue'),
+  },
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+  history: createWebHashHistory(process.env.BASE_URL),
+  routes,
+  base: publicPath
 })
 
 export default router

@@ -22,15 +22,17 @@
                   </div>
                   <div class="field">
                       <label class="label">Senha</label>
-                      <div class="control has-icons-left">
-                          <input class="input" type="password" v-model="user.password" placeholder="Sua senha">
+                      <div class="control has-icons-left has-icons-right">
+                          <input class="input" :type="passwordFieldType" v-model="user.password" placeholder="Sua senha">
                           <span class="icon is-small is-left">
                             <font-awesome-icon icon="fa-solid fa-lock" />
+                          </span>
+                          <span  class="icon is-small is-right" @click="togglePasswordVisibility">
+                            <font-awesome-icon :icon="passwordIconClass" />
                           </span>
                         </div>
                   </div>
                   <a href="#/forgot">Esqueci minha senha</a>
-                <!--  <br><p><b>Atenção: Para acessar a versão antiga do sistema (dados até 10/2024), acesse esse link <a href="https://vigent.saude.sp.gov.br/capop_old">Capop</a></b></p>-->
                 </div>
               </div>
               <footer class="card-footer">
@@ -59,6 +61,7 @@
           username: '',
           password: '',
         },
+        isPasswordVisible: false,
         isNewUser: false,
         isLoading: false,
         message: '',
@@ -74,9 +77,12 @@
       }
     },
     computed: {
-    /*  loggedIn() {
-        return this.$store.getters['auth/isLogged'];
-      }*/
+      passwordFieldType() {
+        return this.isPasswordVisible ? 'text' : 'password';
+      },
+      passwordIconClass() {
+        return this.isPasswordVisible ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';//'fas fa-eye-slash' : 'fas fa-eye';//
+      },
     },
     components: {
       Message,
@@ -94,6 +100,9 @@
     methods: {
       closeModal() {
         this.isNewUser = false;
+      },
+      togglePasswordVisibility() {
+        this.isPasswordVisible = !this.isPasswordVisible;
       },
       login() {
         document.getElementById('login').classList.add('is-loading');
@@ -183,5 +192,9 @@
       width: 100%;
   }
 
+  .icon.is-right {
+    pointer-events: auto;
+    cursor: pointer;
+  }
   
   </style>

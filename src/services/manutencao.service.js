@@ -11,8 +11,8 @@ class ServidorService {
     })
   }
 
-  getDados(tipo, id) {
-    return axios.get(`/manutencao/${tipo}/${id}`)
+  getDados(id) {
+    return axios.get(`/manutencao/${id}`)
     .then(response => {
         return {data: response.data};
     },
@@ -42,7 +42,7 @@ class ServidorService {
   }  
 
   getLista(tipo){
-    return axios.get(`/manutencao/${tipo}`)
+    return axios.get(`/manutencaos/${tipo}`)
     .then(response => {
         return {data: response.data};
     },

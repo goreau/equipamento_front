@@ -21,6 +21,16 @@ class CadastroService {
     })
   } 
 
+  getCadastroFant(id) {
+    return axios.get(`/cadastrofant/${id}`)
+    .then(response => {
+        return {data: response.data};
+    },
+    (error) => {
+        return error;
+    })
+  } 
+
   update(data) {
     return axios.put("/cadastro", data)
     .then(response => {

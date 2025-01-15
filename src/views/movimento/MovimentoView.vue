@@ -12,12 +12,16 @@
             <div class="content">
               <div class="field">
                 <label for="" class="label">Equipamento</label>
-                <div class="control">
+                <div class="control" v-if="id_cadastro == null">
                   <CmbEquipamento @selMov="movimento.id_cadastro = $event"
                     :sel="movimento.id_cadastro" />
                   <span class="is-error" v-if="v$.movimento.id_cadastro.$error">
                     {{ v$.movimento.id_cadastro.$errors[0].$message }}
                   </span>
+                </div>
+                <div class="control" v-if="id_cadastro != null">
+                  <p>Patrimônio: {{ equipamento.patrimonio }}</p>
+                  <p>{{ equipamento.tipo }} - {{ equipamento.fabricante }} ({{ equipamento.modelo }})</p>
                 </div>
               </div>
               <div class="field">
@@ -32,10 +36,10 @@
               <div class="field">
                 <label for="" class="label">Condição</label>
                 <div class="control">
-                  <CmbAuxiliares @selAux="movimento.condicao = $event" :tipo="2"
-                    :sel="movimento.condicao" />
-                  <span class="is-error" v-if="v$.movimento.condicao.$error">
-                    {{ v$.movimento.condicao.$errors[0].$message }}
+                  <CmbAuxiliares @selAux="movimento.id_condicao = $event" :tipo="2"
+                    :sel="movimento.id_condicao" />
+                  <span class="is-error" v-if="v$.movimento.id_condicao.$error">
+                    {{ v$.movimento.id_condicao.$errors[0].$message }}
                   </span>
                 </div>
               </div>
@@ -78,12 +82,14 @@ import CmbTerritorio from "@/components/forms/CmbTerritorio.vue";
 import CmbAuxiliares from "@/components/forms/CmbAuxiliares.vue";
 import footerCard from '@/components/forms/FooterCard.vue'
 import movimentoService from "@/services/movimento.service";
+import cadastroService from '@/services/cadastro.service';
 import moment from 'moment';
 import bulmaCalendar from 'bulma-calendar/dist/js/bulma-calendar.min.js';
 import "bulma-calendar/dist/css/bulma-calendar.min.css";
 import useValidate from "@vuelidate/core";
 import {
   required$,
+  requiredIf$,
   combo$,
 } from "../../components/forms/validators.js";
 
@@ -94,10 +100,11 @@ export default {
         id_cadastro: 0,
         destino: 0,
         id_municipio: 0,
-        condicao: 0,
+        id_condicao: 0,
         dt_movimento: '',
         owner_id: 0,
       },
+      equipamento: {},
       v$: useValidate(),
       isLoading: false,
       message: "",
@@ -116,10 +123,10 @@ export default {
   validations() {
     return {
       movimento: {
-        destino: { required$, minValue: combo$(1) },
-        id_municipio: { required$, minValue: combo$(1) },
+        destino: { requiredIf: requiredIf$(this.movimento.id_condicao == 36) },
+        id_municipio: { requiredIf: requiredIf$(this.movimento.id_condicao == 13 || this.movimento.id_condicao == 14) },
         id_cadastro: { required$, minValue: combo$(1) },
-        condicao: { required$, minValue: combo$(1) },
+        id_condicao: { required$, minValue: combo$(1) },
         dt_movimento: { required$ }
       }
     }
@@ -131,6 +138,9 @@ export default {
     currentUser() {
       return this.$store.getters["auth/loggedUser"];
     },
+    id_cadastro(){
+      return this.$route.params.cad || null;
+    }
   },
   components: {
     Message,
@@ -142,6 +152,14 @@ export default {
   },
   methods: {
     create() {
+      if(this.movimento.destino == 0){
+        this.movimento.destino = 999;
+      }
+
+      if(this.movimento.id_municipio == 0){
+        this.movimento.id_municipio = 999;
+      }
+
       this.v$.$validate();
       if (!this.v$.$error) {
         document.getElementById("login").classList.add("is-loading");
@@ -149,9 +167,9 @@ export default {
         movimentoService.create(this.movimento).then(
           (response) => {
             this.showMessage = true;
-            this.message = "Servidor cadastrado com sucesso.";
+            this.message = "Movimentação cadastrada com sucesso.";
             this.type = "success";
-            this.caption = "Servidor";
+            this.caption = "Movimento";
             setTimeout(() => (this.showMessage = false), 3000);
           },
           (error) => {
@@ -164,7 +182,7 @@ export default {
              error.toString();*/
             this.showMessage = true;
             this.type = "alert";
-            this.caption = "Servidor";
+            this.caption = "Movimento";
             setTimeout(() => (this.showMessage = false), 3000);
           }
         )
@@ -175,7 +193,7 @@ export default {
         this.message = "Corrija os erros para enviar as informações";
         this.showMessage = true;
         this.type = "alert";
-        this.caption = "Servidor";
+        this.caption = "Movimento";
         setTimeout(() => (this.showMessage = false), 3000);
       }
     },
@@ -262,6 +280,30 @@ export default {
   },
   mounted() {
     this.movimento.owner_id = this.currentUser.id;
+    if (this.id_cadastro != null){
+      this.movimento.id_cadastro = this.id_cadastro;
+        cadastroService.getCadastroFant(this.id_cadastro).then(
+        (response) => {
+          this.equipamento = response.data;
+        },
+        (error) => {
+          this.message =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.response.data ||
+            error.message ||
+            error.toString();
+          this.showMessage = true;
+          this.type = "alert";
+          this.caption = "Equipamento";
+          setTimeout(() => (this.showMessage = false), 3000);
+        }
+      );
+
+      this.isLoading = false;
+    }
+    
 
     this.startCalendar();
   },

@@ -5,10 +5,10 @@
         <div class="tile is-10">
           <nav>
             <router-link to="/home" id="logo_url">
-              <img src="@/assets/home.png" alt="img" id="logo" />
+              <img src="@/assets/GGA4.png" alt="img" class="logo" />
             </router-link>
           </nav>
-          <p class="title">Sistema de Equipamentos de Aplicação de Inseticidas</p>
+          <p class="title">Sistema de Equipamentos para Aplicação de Inseticidas</p>
         </div>
         <div class="tile is-12">
           <div class="tile is-ancestor" v-if="loggedIn">
@@ -123,9 +123,12 @@ nav #logo_url {
   margin-left: 0;
 }
 
-#logo {
-  width: 40px;
-  height: 40px;
+.logo {
+  width: 80px;
+  height: 80px;
+  padding: 5px;
+  border: 1px solid #02380f;
+  border-radius: 10px;
 }
 
 .title {

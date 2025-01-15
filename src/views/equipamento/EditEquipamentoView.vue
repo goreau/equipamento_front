@@ -1,65 +1,89 @@
 <template>
-    <div class="main-container">
+  <div class="main-container">
     <div class="columns is-centered">
       <div class="column is-two-fifths">
         <Loader v-if="isLoading" />
         <Message v-if="showMessage" @do-close="closeMessage" :msg="message" :type="type" :caption="caption" />
         <div class="card">
           <header class="card-header">
-            <p class="card-header-title is-centered">Servidor</p>
+            <p class="card-header-title is-centered">Editar Equipamento</p>
           </header>
           <div class="card-content">
             <div class="content">
               <div class="field">
-                <label class="label">Nome</label>
+                <label for="" class="label">Tipo</label>
                 <div class="control">
-                  <input class="input" type="text" placeholder="Nome" v-model="servidor.nome"
-                    :class="{ 'is-danger': v$.servidor.nome.$error }" />
-                  <span class="is-error" v-if="v$.servidor.nome.$error">
-                    {{ v$.servidor.nome.$errors[0].$message }}
+                  <CmbAuxiliares @selAux="cadastro.tipo = $event" :tipo="3"
+                    :sel="cadastro.tipo" />
+                  <span class="is-error" v-if="v$.cadastro.tipo.$error">
+                    {{ v$.cadastro.tipo.$errors[0].$message }}
                   </span>
                 </div>
               </div>
               <div class="field">
-                <label class="label">{{ strLocal }}</label>
+                <label for="" class="label">Fabricante</label>
                 <div class="control">
-                  <CmbTerritorio :id_prop="servidor.id_prop" :tipo="9" @selTerr="servidor.id_base = $event"
-                    :errclass="{ 'is-danger': v$.servidor.id_base.$error }" :sel="servidor.id_base" />
-                  <span class="is-error" v-if="v$.servidor.id_base.$error">
-                    {{ v$.servidor.id_base.$errors[0].$message }}
+                  <CmbAuxiliares @selAux="cadastro.fabricante = $event" :tipo="1"
+                    :sel="cadastro.fabricante" />
+                  <span class="is-error" v-if="v$.cadastro.fabricante.$error">
+                    {{ v$.cadastro.fabricante.$errors[0].$message }}
                   </span>
                 </div>
               </div>
               <div class="field">
-                <label for="" class="label">Função</label>
+                <label for="" class="label">Modelo</label>
                 <div class="control">
-                  <CmbAuxiliares @selAux="servidor.id_funcao = $event" :tipo="1"
-                    :sel="servidor.id_funcao" />
-                  <span class="is-error" v-if="v$.servidor.id_funcao.$error">
-                    {{ v$.servidor.id_funcao.$errors[0].$message }}
+                  <CmbAuxiliares @selAux="cadastro.modelo = $event" :tipo="4" :aux="cadastro.fabricante"
+                    :sel="cadastro.modelo" />
+                  <span class="is-error" v-if="v$.cadastro.modelo.$error">
+                    {{ v$.cadastro.modelo.$errors[0].$message }}
                   </span>
                 </div>
               </div>
               <div class="field">
+                <label class="label">Patrimônio</label>
                 <div class="control">
-                  <label for="" class="checkbox">
-                    <input type="checkbox" v-model="servidor.ativo" :value="1">
-                    Ativo
-                  </label>
+                  <input class="input" type="text" placeholder="Nome" v-model="cadastro.patrimonio"
+                    :class="{ 'is-danger': v$.cadastro.patrimonio.$error }" />
+                  <span class="is-error" v-if="v$.cadastro.patrimonio.$error">
+                    {{ v$.cadastro.patrimonio.$errors[0].$message }}
+                  </span>
                 </div>
               </div>
               <div class="field">
+                <label class="label">Patrimônio CCD</label>
                 <div class="control">
-                  <label for="" class="checkbox">
-                    <input type="checkbox" v-model="servidor.temporario" :value="1">
-                    Temporário
-                  </label>
+                  <input class="input" type="text" placeholder="Nome" v-model="cadastro.patr_ccd"
+                    :class="{ 'is-danger': v$.cadastro.patr_ccd.$error }" />
+                  <span class="is-error" v-if="v$.cadastro.patr_ccd.$error">
+                    {{ v$.cadastro.patr_ccd.$errors[0].$message }}
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Ano de Fabricação</label>
+                <div class="control">
+                  <input class="input" type="text" placeholder="Nome" v-model="cadastro.ano"
+                    :class="{ 'is-danger': v$.cadastro.ano.$error }" />
+                  <span class="is-error" v-if="v$.cadastro.ano.$error">
+                    {{ v$.cadastro.ano.$errors[0].$message }}
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Local</label>
+                <div class="control">
+                  <CmbTerritorio :tipo="2" @selTerr="cadastro.origem = $event" :sel="cadastro.origem"
+                    :errclass="{ 'is-danger': v$.cadastro.origem.$error }" />
+                  <span class="is-error" v-if="v$.cadastro.origem.$error">
+                    {{ v$.cadastro.origem.$errors[0].$message }}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
           <footer class="card-footer">
-            <footerCard @submit="update" @cancel="null" @aux="details" :cFooter="cFooter" />
+            <footerCard @submit="edit" @cancel="null" @aux="details" :cFooter="cFooter" />
           </footer>
         </div>
       </div>
@@ -84,36 +108,42 @@ import {
 export default {
   data() {
     return {
-      servidor: {
-        id_servidor: 0,
-        nome: "",
-        id_base: 0,
-        id_funcao: 0,
-        ativo: true,
-        temporario: false,
+      cadastro: {
+        id_cadastro: 0,
+        origem: 0,
+        patrimonio: "",
+        patr_ccd: "",
+        ano: "",
+        tipo: 0,
+        fabricante: 0,
+        modelo: 0,
         owner_id: 0,
       },
       v$: useValidate(),
       isLoading: false,
       message: "",
       caption: "",
+      strLocal: "Local",
       type: "",
-      strLocal: "",
       showMessage: false,
-      cFooter:{
-          strSubmit:'Salvar',
-          strCancel: 'Cancelar',
-          strAux:'',
-          aux: false
-        }
+      cFooter: {
+        strSubmit: 'Alterar',
+        strCancel: 'Cancelar',
+        strAux: '',
+        aux: false
+      }
     };
   },
-  validations(){
+  validations() {
     return {
-      servidor: {
-        nome: { required$, minLength: minLength$(10) },
-        id_funcao: { required$, minValue: combo$(1) },
-        id_base: { required$, minValue: combo$(1) },
+      cadastro: {
+        patrimonio: { required$, minLength: minLength$(5) },
+        patr_ccd: { minLength: minLength$(5) },
+        ano: {required$, minValue: 1960, maxValue: 2025},
+        origem: { required$, minValue: combo$(1) },
+        fabricante: { required$, minValue: combo$(1) },
+        modelo: { required$, minValue: combo$(1) },
+        tipo: { required$, minValue: combo$(1) },
       }
     }
   },
@@ -136,14 +166,15 @@ export default {
     loadData(){
       this.isLoading = true;
 
-      cadastroService.getServidor(this.servidor.id_servidor).then(
+      cadastroService.getCadastro(this.cadastro.id_cadastro).then(
         (response) => {
           let data = response.data;
-          this.servidor.nome = data.nome;
-          this.servidor.id_base = data.id_base;
-          this.servidor.id_funcao = data.id_funcao;
-          this.servidor.ativo = data.ativo;
-          this.servidor.temporario = data.temporario;
+          this.cadastro.ano = data.ano;
+          this.cadastro.fabricante = data.fabricante;
+          this.cadastro.modelo = data.modelo;
+          this.cadastro.tipo = data.tipo;
+          this.cadastro.patrimonio = data.patrimonio;
+          this.cadastro.origem = data.origem;
         },
         (error) => {
           this.message =
@@ -155,57 +186,57 @@ export default {
             error.toString();
           this.showMessage = true;
           this.type = "alert";
-          this.caption = "Servidor";
+          this.caption = "Equipamento";
           setTimeout(() => (this.showMessage = false), 3000);
         }
       );
 
       this.isLoading = false;
     },
-    update() {
-      this.v$.$validate(); 
+    edit() {
+      this.v$.$validate();
       if (!this.v$.$error) {
         document.getElementById("login").classList.add("is-loading");
 
-        servidorService.update(this.servidor).then(
+        cadastroService.update(this.cadastro).then(
           (response) => {
             this.showMessage = true;
-            this.message = "Dados do servidor alterados com sucesso.";
+            this.message = "Equipamento alterado com sucesso.";
             this.type = "success";
-            this.caption = "Servidor";
+            this.caption = "Equipamento";
             setTimeout(() => (this.showMessage = false), 3000);
           },
           (error) => {
-            this.message =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.response.data ||
-              error.message ||
-              error.toString();
+            this.message = error;
+            /* (error.response &&
+               error.response.data &&
+               error.response.data.message) ||
+             error.data.err ||
+             error.message ||
+             error.toString();*/
             this.showMessage = true;
             this.type = "alert";
-            this.caption = "Servidor";
+            this.caption = "Equipamento";
             setTimeout(() => (this.showMessage = false), 3000);
           }
         )
-        .finally(() => {
+          .finally(() => {
             document.getElementById("login").classList.remove("is-loading");
           });
       } else {
         this.message = "Corrija os erros para enviar as informações";
         this.showMessage = true;
         this.type = "alert";
-        this.caption = "Servidor";
+        this.caption = "Equipamento";
         setTimeout(() => (this.showMessage = false), 3000);
       }
     },
   },
   mounted() {
-    this.servidor.owner_id = this.currentUser.id;
+    this.cadastro.owner_id = this.currentUser.id;
   },
   created() {
-    this.servidor.id_servidor = this.$route.params.id;
+    this.cadastro.id_cadastro = this.$route.params.id;
     this.loadData();
   },
 };

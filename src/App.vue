@@ -82,10 +82,10 @@ export default {
               href: "/mycad",
               title: "Meu Cadastro",
             },
-            {
+           /* {
               href: "/ajuda",
               title: "Materiais Auxiliares",
-            },
+            },*/
             {
               href: "/",
               title: "Sair",
@@ -222,7 +222,19 @@ export default {
           child: [
             {
               href: "/listManutencao/1",
-              title: "Fabricantes",
+              title: "Fabricante",
+              icon: {
+                element: "font-awesome-icon",
+                attributes: {
+                  icon: "fa-solid fa-search",
+                  size: "lg",
+                  transform: "shrink-8",
+                },
+              },
+            },
+            {
+              href: "/listManutencao/4",
+              title: "Modelo",
               icon: {
                 element: "font-awesome-icon",
                 attributes: {
@@ -234,7 +246,19 @@ export default {
             },
             {
               href: "/listManutencao/2",
-              title: "Situação",
+              title: "Situação do Equipamento",
+              icon: {
+                element: "font-awesome-icon",
+                attributes: {
+                  icon: "fa-solid fa-search",
+                  size: "lg",
+                  transform: "shrink-8",
+                },
+              },
+            },
+            {
+              href: "/listManutencao/3",
+              title: "Tipo de Equipamento",
               icon: {
                 element: "font-awesome-icon",
                 attributes: {
@@ -260,12 +284,24 @@ export default {
           },
           child: [
             {
-              href: "/mainReport/7",
-              title: "Resumo Atividades Campo",
+              href: "/mainReport/1",
+              title: "Resumo de Equipamentos",
             },
             {
-              href: "/mainReport/8",
-              title: "Indicador de Perdas",
+              href: "/mainReport/2",
+              title: "Situação dos Equipamentos",
+            },
+            {
+              href: "/mainReport/5",
+              title: "Equipamentos sem Situação",
+            },
+            {
+              href: "/mainReport/3",
+              title: "Resumo Equip. Municipais",
+            },
+            {
+              href: "/mainReport/4",
+              title: "Listagem Equip. Municipais",
             },
           ],
         },

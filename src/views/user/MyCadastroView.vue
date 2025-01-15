@@ -124,7 +124,7 @@
                     class="input"
                     type="password"
                     v-model="user.new_password"
-                    placeholder="Confirme a senha"
+                    placeholder="Opcional"
                     :class="{ 'is-danger': v$.user.new_password.$error }"
                   />
                   <span class="is-error" v-if="v$.user.new_password.$error">
@@ -139,7 +139,7 @@
                     class="input"
                     type="password"
                     v-model="senha"
-                    placeholder="Confirme a senha"
+                    placeholder="Confirme a nova senha caso haja alteração"
                     :class="{ 'is-danger': v$.senha.$error }"
                   />
                   <span class="is-error" v-if="v$.senha.$error">
@@ -236,7 +236,6 @@ export default {
   methods: {  
     update() {
       this.v$.$validate(); 
-      var teste = this.v$.senha.$dirty;
       if (!this.v$.$error) {
         document.getElementById("login").classList.add("is-loading");
 

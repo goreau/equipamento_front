@@ -1,5 +1,6 @@
 <template>
     <div id="footer">
+            <img src="@/assets/CCD.png" alt="img" class="logo" />
           <p>Coordenadoria de Controle de Doenças &copy; 2024</p>
       </div> 
   </template>
@@ -28,5 +29,9 @@
           z-index: 98;
           position:fixed;
           margin-bottom:0px;
+      }
+      .logo {
+        width: 120px;
+        height: 40px;
       }
   </style>

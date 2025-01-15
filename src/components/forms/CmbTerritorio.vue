@@ -45,7 +45,11 @@ export default {
   mounted() {
     this.loadData();
   },
-  
+  watch: {
+    tipo() {
+      this.loadData();
+    }
+  },
 };
 </script>
 

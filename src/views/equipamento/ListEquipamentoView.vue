@@ -25,6 +25,9 @@
           <span class="icon is-small is-left" name="coisa2">
             <font-awesome-icon  icon="fa-solid fa-trash" />
           </span>
+          <span class="icon is-small is-left" name="coisa3">
+            <font-awesome-icon  icon="fa-solid fa-arrow-right-arrow-left" />
+          </span>
         </div>
       </div>
     </div>
@@ -86,6 +89,7 @@ export default {
 
     this.myspan = document.getElementsByName('coisa')[0];
     this.myspan2 = document.getElementsByName('coisa2')[0];
+    this.myspan3 = document.getElementsByName('coisa3')[0];
 
     //document.createElement('span');
    // this.myspan.innerHTML='<p>teste</p>';;
@@ -103,11 +107,10 @@ export default {
 
       this.columns = [
           {title: 'Local Origem', field: 'origem', minWidth: 200, responsive: 1},
-          {title: 'Local Destino', field: 'destino', minWidth: 200, responsive: 2},
-          {title: 'Tipo', field: 'tipo', minWidth: 200, responsive: 3},
+          {title: 'Tipo', field: 'tipo', minWidth: 200, responsive: 4},
           {title: 'Fabricante', field: 'fabricante', minWidth: 100},
           {title: 'Patrimônio', field: 'patrimonio', minWidth: 150},
-          {title: 'Condição', field: 'condicao', minWidth: 200},
+          {title: 'Patrimônio CCD', field: 'patr_ccd', minWidth: 150},
           {title: 'Responsável', field: 'owner', minWidth: 100},
           {title: 'Ações', responsive: 0, minWidth: 250, 
             formatter: (cell, formatterParams) =>{
@@ -121,7 +124,7 @@ export default {
               btEdit.classList.add('button', 'is-primary', 'is-outlined');
               btEdit.innerHTML = this.myspan.innerHTML;
               btEdit.addEventListener('click', () => {
-                this.$router.push(`/editServidor/${row.id_servidor}`);
+                this.$router.push(`/editEquipamento/${row.id_cadastro}`);
               });
 
             /* const teste = document.createElement('div'); 
@@ -138,11 +141,11 @@ export default {
               btDel.addEventListener('click', async() => {
                 const ok = await this.$refs.confirmDialog.show({
                   title: 'Excluir',
-                  message: 'Deseja mesmo excluir esse usuário?',
+                  message: 'Deseja mesmo excluir esse equipamento e os possíveis movimentos associados a ele? Essa ação não poderá ser revertida!',
                   okButton: 'Confirmar',
               })
               if (ok) {
-                cadastroService.delete(row.id_servidor)
+                cadastroService.delete(row.id_cadastro)
                 .then(resp =>{
                   if (resp.status == '200'){
                     if (resp.data.err){
@@ -178,10 +181,22 @@ export default {
               }
               });
 
+              const btMov = document.createElement('button');
+              btMov.type = 'button';
+              btMov.title = 'Movimentos';
+              //btMov.disabled = this.id_user != row.owner_id;
+              btMov.style.cssText = 'height: fit-content; margin-left: 1rem;';
+              btMov.classList.add('button', 'is-link', 'is-outlined');
+              btMov.innerHTML = this.myspan3.innerHTML;
+              btMov.addEventListener('click', () => {
+                this.$router.push(`/movimentosEq/${row.id_cadastro}`);
+              });
+
               
               const buttonHolder = document.createElement('span');
               buttonHolder.appendChild(btEdit);
               buttonHolder.appendChild(btDel);
+              buttonHolder.appendChild(btMov);
              
               return buttonHolder;
 

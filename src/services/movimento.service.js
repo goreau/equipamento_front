@@ -41,8 +41,8 @@ class MovimentoService {
     })
   }  
 
-  getMovimentos(prop){
-    return axios.get(`/movimentos/${prop}`)
+  getMovimentos(){
+    return axios.get(`/movimentos`)
     .then(response => {
         return {data: response.data};
     },
@@ -51,7 +51,17 @@ class MovimentoService {
     })
   }
 
-  getCombo(prop){
+  getMovimentosEq(id){
+    return axios.get(`/movimentos/${id}`)
+    .then(response => {
+        return {data: response.data};
+    },
+    (error) => {
+        return error.response.data;
+    })
+  }
+
+  getCombo(){
     return axios.get('/movimentocombo')
     .then(response => {
         return {data: response.data};
@@ -60,8 +70,6 @@ class MovimentoService {
         return error.response.data;
     })
   }
-
-  
 }
 
 export default new MovimentoService();

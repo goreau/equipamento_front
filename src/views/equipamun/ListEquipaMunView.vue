@@ -6,24 +6,12 @@
         <Message v-if="showMessage" @do-close="closeMessage" :msg="message" :type="type" :caption="caption" />
         <div class="card">
           <header class="card-header">
-            <p class="card-header-title is-centered">Movimentação de Equipamentos Cadastradas</p>
-            <button class="button is-primary is-outlined" @click="newUser" v-if="id_cadastro == null">
+            <p class="card-header-title is-centered">Equipamentos Cadastrados - Municípios</p>
+            <button class="button is-primary is-outlined" @click="newUser">
               <span class="icon">
                 <font-awesome-icon icon="fa-solid fa-plus-circle" />
               </span>
               <span>Novo</span>
-            </button>
-            <button class="button is-primary is-outlined" @click="newMov" v-if="id_cadastro != null">
-              <span class="icon">
-                <font-awesome-icon icon="fa-solid fa-plus-circle" />
-              </span>
-              <span>Novo</span>
-            </button>
-            <button class="button is-info is-outlined" @click="back" v-if="id_cadastro != null">
-              <span class="icon">
-                <font-awesome-icon icon="fa-solid fa-plus-circle" />
-              </span>
-              <span>Voltar</span>
             </button>
           </header>
           <div class="card-content">
@@ -45,7 +33,7 @@
 </template>
 
 <script>
-import movimentoService from "@/services/movimento.service";
+import equipamunService from "@/services/equipamun.service";
 import MyTable from '@/components/forms/MyTable.vue';
 import Loader from '@/components/general/Loader.vue';
 import Message from "@/components/general/Message.vue";
@@ -80,12 +68,6 @@ export default {
       newUser() {
         this.$router.push('/movimento');
       },
-      newMov() {
-        this.$router.push(`/movimentoEq/${this.id_cadastro}`);
-      },
-      back() {
-        this.$router.go(-1);
-      },
       editUser(id) {
           this.$router.push(`/manage/${id}`);
       },
@@ -105,11 +87,11 @@ export default {
     this.myspan = document.getElementsByName('coisa')[0];
     this.myspan2 = document.getElementsByName('coisa2')[0];
 
-    this.isLoading = true;
-    if (this.id_cadastro != null){
-      localStorage.removeItem(this.tableName);
+    //document.createElement('span');
+   // this.myspan.innerHTML='<p>teste</p>';;
 
-      movimentoService.getMovimentosEq(this.id_cadastro)
+      this.isLoading = true;
+      equipamunService.getEquipamuns()
           .then((response) => {
               this.dataTable = response.data;
               this.isLoading = false;
@@ -118,31 +100,16 @@ export default {
             console.log(err);
           })
           .finally(() => this.isLoading = false);
-    } else {
-      movimentoService.getMovimentos()
-          .then((response) => {
-              this.dataTable = response.data;
-              this.isLoading = false;
-          })
-          .catch((err) =>{
-            console.log(err);
-          })
-          .finally(() => this.isLoading = false);
-    }
-
-      
-      
 
       this.columns = [
-          {title: 'Patrimônio', field: 'patrimonio', minWidth: 150},
-          {title: 'Fabricante', field: 'fabricante', minWidth: 100},
-          {title: 'Tipo', field: 'tipo', minWidth: 200, responsive: 3},
-          {title: 'Local Origem', field: 'origem', minWidth: 200, responsive: 1},
-          {title: 'Condição', field: 'condicao', minWidth: 200},
-          {title: 'Local Destino', field: 'destino', minWidth: 200, responsive: 2},
+          {title: 'Regional', field: 'regional', minWidth: 200},
           {title: 'Município', field: 'municipio', minWidth: 200},
-          {title: 'Data', field: 'dt_movimento', minWidth: 200, formatter:"datetime", formatterParams:{
-              inputFormat:"yyyy-MM-dd",
+          {title: 'Tipo', field: 'tipo', minWidth: 200, responsive: 3},
+          {title: 'Fabricante', field: 'fabricante', minWidth: 100},         
+          {title: 'Qt (Próprios)', field: 'proprio', minWidth: 200, responsive: 1},
+          {title: 'QT (Cedidos)', field: 'cedido', minWidth: 200},
+          {title: 'Atualizado', field: 'data', minWidth: 200, formatter:"datetime", formatterParams:{
+              inputFormat:"yyyy-MM-dd HH:mm:ss",
               outputFormat:"dd/MM/yyyy",
               invalidPlaceholder:"Data inválida",
               timezone:"America/Sao_Paulo",
@@ -160,7 +127,7 @@ export default {
               btEdit.classList.add('button', 'is-primary', 'is-outlined');
               btEdit.innerHTML = this.myspan.innerHTML;
               btEdit.addEventListener('click', () => {
-                this.$router.push(`/editMovimento/${row.id_movimento}`);
+                this.$router.push(`/editEquipMun/${row.id_equipamun}`);
               });
 
             /* const teste = document.createElement('div'); 
@@ -177,19 +144,19 @@ export default {
               btDel.addEventListener('click', async() => {
                 const ok = await this.$refs.confirmDialog.show({
                   title: 'Excluir',
-                  message: 'Deseja mesmo excluir esse movimento?',
+                  message: 'Deseja mesmo excluir esse equipamento?',
                   okButton: 'Confirmar',
               })
               if (ok) {
-                movimentoService.delete(row.id_movimento)
+                equipamunService.delete(row.id_equipamun)
                 .then(resp =>{
                   if (resp.status == '200'){
                     if (resp.data.err){
                       var uses = resp.data.msg.join();
-                      this.message = `Erro: ${uses}!`;
+                      this.message = `Esse usuário tem uso nas seguinte(s) fonte(s) de informação: <b> ${uses}</b>. Ele foi marcado como inativo. Para excluí-lo definitavamente, exclua os usos e depois tente novamente!`;
                       this.showMessage = true;
                       this.type = "alert";
-                      this.caption = "Movimento";
+                      this.caption = "Equipamento";
                       setTimeout(() => {
                         this.showMessage = false;
                         location.reload();
@@ -203,7 +170,7 @@ export default {
                     this.message = resp;
                     this.showMessage = true;
                     this.type = "alert";
-                    this.caption = "Movimento";
+                    this.caption = "Equipamento";
                     setTimeout(() => {this.showMessage = false}, 3000);
                   }
                 })
@@ -211,13 +178,12 @@ export default {
                   this.message = err;
                   this.showMessage = true;
                   this.type = "alert";
-                  this.caption = "Movimento";
+                  this.caption = "Equipamento";
                   setTimeout(() => {this.showMessage = false}, 3000);
                 })
               }
               });
-
-              
+            
               const buttonHolder = document.createElement('span');
               buttonHolder.appendChild(btEdit);
               buttonHolder.appendChild(btDel);
@@ -231,9 +197,6 @@ export default {
     currentUser() {
       return this.$store.getters["auth/loggedUser"];
     },
-    id_cadastro(){
-      return this.$route.params.id || null;
-    }
   },
 }
 </script>

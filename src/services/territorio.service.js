@@ -61,8 +61,8 @@ class TerritorioService {
     })
   }
 
-  getComboMun(tipo, id_prop){
-    return axios.get(`/muncombo/${tipo}`)
+  getComboMun(){
+    return axios.get(`/muncombo`)
     .then(response => {
         return {data: response.data};
     },
