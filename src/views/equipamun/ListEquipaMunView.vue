@@ -106,8 +106,7 @@ export default {
           {title: 'Município', field: 'municipio', minWidth: 200},
           {title: 'Tipo', field: 'tipo', minWidth: 200, responsive: 3},
           {title: 'Fabricante', field: 'fabricante', minWidth: 100},         
-          {title: 'Qt (Próprios)', field: 'proprio', minWidth: 200, responsive: 1},
-          {title: 'QT (Cedidos)', field: 'cedido', minWidth: 200},
+          {title: 'Quantidade', field: 'proprio', minWidth: 200, responsive: 1},
           {title: 'Atualizado', field: 'data', minWidth: 200, formatter:"datetime", formatterParams:{
               inputFormat:"yyyy-MM-dd HH:mm:ss",
               outputFormat:"dd/MM/yyyy",

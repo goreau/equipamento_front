@@ -45,8 +45,15 @@
               </div>
               <div class="field">
                 <label class="label">Destino</label>
-                <div class="control">
+                <div class="control" v-if="movimento.id_condicao != 36">
                   <CmbTerritorio :tipo="2" @selTerr="movimento.destino = $event"
+                    :errclass="{ 'is-danger': v$.movimento.destino.$error }" />
+                  <span class="is-error" v-if="v$.movimento.destino.$error">
+                    {{ v$.movimento.destino.$errors[0].$message }}
+                  </span>
+                </div>
+                <div class="control" v-if="movimento.id_condicao == 36">
+                  <CmbTerritorio :tipo="9" @selTerr="movimento.destino = $event"
                     :errclass="{ 'is-danger': v$.movimento.destino.$error }" />
                   <span class="is-error" v-if="v$.movimento.destino.$error">
                     {{ v$.movimento.destino.$errors[0].$message }}
@@ -280,6 +287,13 @@ export default {
   },
   mounted() {
     this.movimento.owner_id = this.currentUser.id;
+    if (this.currentUser.nivel == 9){
+      this.message = "Você não tem permissão para cadastrar movimentos";
+        this.showMessage = true;
+        this.type = "alert";
+        this.caption = "Movimento";
+        setTimeout(() => {this.showMessage = false; this.$router.push('movimentos'); }, 3000);
+    }
     if (this.id_cadastro != null){
       this.movimento.id_cadastro = this.id_cadastro;
         cadastroService.getCadastroFant(this.id_cadastro).then(
@@ -296,7 +310,7 @@ export default {
             error.toString();
           this.showMessage = true;
           this.type = "alert";
-          this.caption = "Equipamento";
+          this.caption = "Movimento";
           setTimeout(() => (this.showMessage = false), 3000);
         }
       );

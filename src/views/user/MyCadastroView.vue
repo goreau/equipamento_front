@@ -68,10 +68,19 @@
                     <input
                       type="radio"
                       nome="role"
-                      value="2"
+                      value="3"
                       checked="checked"
                     />
                     Gestor Local
+                  </label>
+                  <label class="radio" v-if="user.role==9">
+                    <input
+                      type="radio"
+                      nome="role"
+                      value="9"
+                      checked="checked"
+                    />
+                    Convidado
                   </label>
                 </div>
               </div>
@@ -190,7 +199,7 @@ export default {
         role: 0,
         id: 1,
       },
-      version: '27.11',
+      version: '10.02',
       senha: '',
       v$: useValidate(),
       unidade:'',
@@ -278,7 +287,7 @@ export default {
           this.user.role = data.nivel;
           //this.user.old_password = data.password;
           this.user.username = data.username;
-          this.strLocal = (data.nivel == 3 ? 'GVE' : (data.nivel == 1 ? 'Local' : 'Regional'));
+          this.strLocal = (data.nivel == 3 ? 'NAOR' : (data.nivel == 1 ? 'Local' : 'Regional'));
         },
         (error) => {
           this.message = error.data;

@@ -46,7 +46,10 @@ export default {
     this.loadData();
   },
   watch: {
-    tipo() {
+    tipo(value) {
+      if (value == 9){
+        return;
+      }
       this.loadData();
     }
   },

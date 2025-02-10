@@ -63,6 +63,15 @@
                     />
                     Gestor Local
                   </label>
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      name="role"
+                      value="9"
+                      v-model="role"
+                    />
+                    Convidado
+                  </label>
                 </div>
                 <span class="is-error" v-if="v$.user.nivel.$error">
                     {{ v$.user.nivel.$errors[0].$message }}
@@ -228,7 +237,7 @@ export default {
   watch:{
     role(value) {
       this.user.nivel = value;
-      this.strLocal = (value == 3 ? 'GVE' : (value == 2 ? 'Regional' : 'Local' ));
+      this.strLocal = (value == 3 ? 'NAOR' : (value == 2 ? 'Regional' : 'Local' ));
     },
   },
   methods: {
@@ -273,6 +282,13 @@ export default {
   },
   mounted() {
     this.user.id_prop = this.currentUser.id;
+    if (this.currentUser.nivel == 9){
+      this.message = "Você não tem permissão para cadastrar novos usuários";
+        this.showMessage = true;
+        this.type = "alert";
+        this.caption = "Usuário";
+        setTimeout(() => {this.showMessage = false; this.$router.push('/users'); }, 3000);
+    }
   },
 };
 </script>

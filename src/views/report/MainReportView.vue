@@ -13,7 +13,7 @@
               <section class="section">
                 <div class="dvTipo">
                   <label class="label">Filtros:</label>
-                  <div class="columns" v-if="currentUser.nivel == 1">
+                  <div class="columns" v-if="currentUser.nivel == 1 || currentUser.nivel == 9">
                     <div class="column is-full">
                       <div class="field">
                         <label class="label">Regional</label>
@@ -27,7 +27,7 @@
                   <div class="columns" v-if="currentUser.nivel >= 2">
                     <div class="column is-full">
                       <div class="field">
-                        <label class="label">GVE</label>
+                        <label class="label">NAOR</label>
                         <div class="control">
                           <CmbTerritorio :id_prop="currentUser.id" :sel="filterEq.id_gve" :tipo="3"
                             @selTerr="filterEq.id_gve = $event" />
@@ -46,8 +46,6 @@
                       </div>
                     </div>
                   </div>
-                  
-                  
                 </div>
               </section>
               <section class="section" v-if="tipo_relat > 0">
@@ -117,6 +115,12 @@ export default {
     },
     processar() {
       this.filterEq.id_prop = this.id_usuario;
+      if (this.currentUser.nivel == 1){
+        this.filterEq.id_gve = 0;
+      } else {
+        this.filterEq.id_regional = 0;
+      }
+
       localStorage.setItem('filterEq', JSON.stringify(this.filterEq));
 
       if (this.tipo_relat < 100) {
@@ -130,7 +134,7 @@ export default {
     let cUser = this.currentUser;
     if (cUser) {
       this.id_usuario = cUser.id;
-    }
+    } 
 
     var obj = localStorage.getItem('filterEq');
     if (obj) {

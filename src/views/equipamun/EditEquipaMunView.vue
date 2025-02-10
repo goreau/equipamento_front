@@ -43,7 +43,7 @@
               <div class="field">
                 <label for="" class="label">Modelo</label>
                 <div class="control">
-                  <CmbAuxiliares @selAux="equipamun.modelo = $event" :tipo="4" :aux="equipamun.fabricante"
+                  <CmbAuxiliares @selAux="equipamun.modelo = $event" :tipo="4" :aux="equipamun.fabricante" :extra="equipamun.tipo"
                     :sel="equipamun.modelo" />
                   <span class="is-error" v-if="v$.equipamun.modelo.$error">
                     {{ v$.equipamun.modelo.$errors[0].$message }}
@@ -57,16 +57,6 @@
                     :class="{ 'is-danger': v$.equipamun.proprio.$error }" />
                   <span class="is-error" v-if="v$.equipamun.proprio.$error">
                     {{ v$.equipamun.proprio.$errors[0].$message }}
-                  </span>
-                </div>
-              </div>
-              <div class="field">
-                <label class="label">Cedidos</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Nome" v-model="equipamun.cedido"
-                    :class="{ 'is-danger': v$.equipamun.cedido.$error }" />
-                  <span class="is-error" v-if="v$.equipamun.cedido.$error">
-                    {{ v$.equipamun.cedido.$errors[0].$message }}
                   </span>
                 </div>
               </div>
@@ -104,7 +94,6 @@ export default {
         tipo: 0,
         modelo: 0,
         proprio: 0,
-        cedido: 0,
         owner_id: 0,
       },
       v$: useValidate(),
@@ -130,7 +119,6 @@ export default {
         modelo: { required$, minValue: combo$(1) },
         id_municipio: { required$, minValue: combo$(1) },
         proprio: { numeric$ },
-        cedido: { numeric$ }
       }
     }
   },
@@ -161,7 +149,6 @@ export default {
           this.equipamun.fabricante = data.fabricante;
           this.equipamun.modelo = data.modelo;
           this.equipamun.proprio = data.proprio;
-          this.equipamun.cedido = data.cedido;
         },
         (error) => {
           this.message =

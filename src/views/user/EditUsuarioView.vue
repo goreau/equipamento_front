@@ -48,9 +48,9 @@
                     <input
                       type="radio"
                       nome="nivel"
-                      value="9"
+                      value="2"
                       v-model="role"
-                      :disabled="currentUser.nivel == 2 || currentUser.nivel == 3"
+                      :disabled="currentUser.nivel > 2"
                     />
                     Gestor Regional
                   </label>
@@ -68,10 +68,10 @@
                     <input
                       type="radio"
                       nome="nivel"
-                      value="3"
+                      value="9"
                       v-model="role"
                     />
-                    Usuário Município
+                    Convidado
                   </label>
                 </div>
               </div>
@@ -247,7 +247,7 @@ export default {
           this.municipio = data.municipio;
           this.user.email = data.email;
           this.role = data.nivel;
-         // this.strLocal = (data.nivel == 3 ? 'Município' : (data.nivel == 2 ? 'GVE' : (data.nivel == 1 ? 'Local' : 'Regional')));
+         // this.strLocal = (data.nivel == 3 ? 'Município' : (data.nivel == 2 ? 'NAOR' : (data.nivel == 1 ? 'Local' : 'Regional')));
         },
         (error) => {
           this.message =
@@ -308,7 +308,7 @@ export default {
   watch:{
     role(value) {
       this.user.nivel = value;
-      this.strLocal = (value == 3 ? 'Município' : (value == 2 ? 'GVE' : (value == 1 ? 'Local' : 'Regional')));
+      this.strLocal = (value == 3 ? 'Município' : (value == 2 ? 'NAOR' : (value == 1 ? 'Local' : 'Regional')));
     },
   },
   mounted() {

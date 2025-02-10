@@ -33,7 +33,7 @@
               <div class="field">
                 <label for="" class="label">Modelo</label>
                 <div class="control">
-                  <CmbAuxiliares @selAux="cadastro.modelo = $event" :tipo="4" :aux="cadastro.fabricante"
+                  <CmbAuxiliares @selAux="cadastro.modelo = $event" :tipo="4" :aux="cadastro.fabricante" :extra="cadastro.tipo"
                     :sel="cadastro.modelo" />
                   <span class="is-error" v-if="v$.cadastro.modelo.$error">
                     {{ v$.cadastro.modelo.$errors[0].$message }}
@@ -203,6 +203,13 @@ export default {
   },
   mounted() {
     this.cadastro.owner_id = this.currentUser.id;
+    if (this.currentUser.nivel == 9){
+      this.message = "Você não tem permissão para cadastrar novos equipamentos";
+        this.showMessage = true;
+        this.type = "alert";
+        this.caption = "Equipamento";
+        setTimeout(() => {this.showMessage = false; this.$router.push('/equipamentos'); }, 3000);
+    }
   },
 };
 </script>

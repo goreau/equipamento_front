@@ -1,8 +1,8 @@
 import axios from "@/services/api.js";
 
 class AuxiliaresService {
-  getCombo(tipo, aux){
-    return axios.get(`/auxiliares/${tipo}/${aux}`)
+  getCombo(tipo, aux, extra){
+    return axios.get(`/auxiliares/${tipo}/${aux}/${extra}`)
     .then(response => {
         return {data: response.data};
     },

@@ -73,6 +73,7 @@ export default {
                         { title: "Local", field: "local",  },
                         { title: "Tipo", field: "tipo", minWidth: 600, },
                         { title: "Patrimônio", field: "patrimonio",  },
+                        { title: "Patrimônio CCD", field: "patr_ccd",  },
                         { title: "Fabricante", field: "fabricante",  },
                         { title: "Modelo", field: "modelo" },
                         { title: "Situação", field: "condicao" },
@@ -93,7 +94,6 @@ export default {
                 { title: "Município", field: "municipio",  },
                 { title: "Tipo", field: "tipo",  },
                 { title: "Próprios", field: "proprio",  },
-                { title: "Cedidos", field: "cedido",  },
               ];
               
           
@@ -106,8 +106,7 @@ export default {
                         { title: "Tipo", field: "tipo",  },
                         { title: "Fabricante", field: "fabricante",  },
                         { title: "Modelo", field: "modelo" },
-                        { title: "Próprios", field: "proprio",  },
-                        { title: "Cedidos", field: "cedido",  },        
+                        { title: "Próprios", field: "proprio",  },       
           ];
           break;
         case '5':
@@ -115,6 +114,7 @@ export default {
           this.columns = [
                         { title: "Local", field: "local",  },
                         { title: "Patrimônio", field: "patrimonio",  },
+                        { title: "Patrimônio CCD", field: "patr_ccd",  },
                         { title: "Tipo", field: "tipo",  },
                         { title: "Fabricante", field: "fabricante",  },
                         { title: "Modelo", field: "modelo" },

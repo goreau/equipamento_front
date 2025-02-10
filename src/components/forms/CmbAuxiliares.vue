@@ -27,13 +27,13 @@ export default {
       auxiliares: []
     };
   },
-  props: ['sel', 'errclass','tipo', 'aux', 'disabled', 'id'],
+  props: ['sel', 'errclass','tipo', 'aux', 'disabled', 'id', 'extra'],
   methods: {
     onChange(event) {
       this.$emit('selAux',event.target.value);
     },
     loadData() {
-      auxiliaresService.getCombo(this.tipo, this.aux)
+      auxiliaresService.getCombo(this.tipo, this.aux, this.extra)
       .then((res) => {
         this.auxiliares = res.data;
       })
