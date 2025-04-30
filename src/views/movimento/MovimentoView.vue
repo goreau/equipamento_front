@@ -63,7 +63,7 @@
               <div class="field">
                 <label class="label">Município</label>
                 <div class="control">
-                  <CmbTerritorio :tipo="4" @selTerr="movimento.id_municipio = $event"
+                  <CmbMunicipio :tipo="4" @selMun="movimento.id_municipio = $event" :all="currentUser.nivel > 1"
                     :errclass="{ 'is-danger': v$.movimento.id_municipio.$error }" />
                   <span class="is-error" v-if="v$.movimento.id_municipio.$error">
                     {{ v$.movimento.id_municipio.$errors[0].$message }}
@@ -87,6 +87,7 @@ import Loader from "@/components/general/Loader.vue";
 import CmbEquipamento from "@/components/forms/CmbEquipamento.vue";
 import CmbTerritorio from "@/components/forms/CmbTerritorio.vue";
 import CmbAuxiliares from "@/components/forms/CmbAuxiliares.vue";
+import CmbMunicipio from "@/components/forms/CmbMunicipio.vue";
 import footerCard from '@/components/forms/FooterCard.vue'
 import movimentoService from "@/services/movimento.service";
 import cadastroService from '@/services/cadastro.service';
@@ -155,6 +156,7 @@ export default {
     CmbTerritorio,
     CmbAuxiliares,
     CmbEquipamento,
+    CmbMunicipio,
     footerCard
   },
   methods: {

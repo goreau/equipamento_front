@@ -73,7 +73,7 @@
               <div class="field">
                 <label class="label">Local</label>
                 <div class="control">
-                  <CmbTerritorio :tipo="2" @selTerr="cadastro.origem = $event"
+                  <CmbTerritorio :tipo="7" @selTerr="cadastro.origem = $event"
                     :errclass="{ 'is-danger': v$.cadastro.origem.$error }" />
                   <span class="is-error" v-if="v$.cadastro.origem.$error">
                     {{ v$.cadastro.origem.$errors[0].$message }}

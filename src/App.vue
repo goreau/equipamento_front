@@ -268,6 +268,18 @@ export default {
                 },
               },
             },
+            {
+              href: "/listTransf",
+              title: "Equipamentos Transferidos",
+              icon: {
+                element: "font-awesome-icon",
+                attributes: {
+                  icon: "fa-solid fa-search",
+                  size: "lg",
+                  transform: "shrink-8",
+                },
+              },
+            },
           ],
         },
         {

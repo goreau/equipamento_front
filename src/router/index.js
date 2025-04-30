@@ -118,6 +118,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "user" */ '../views/manutencao/ListManutencaoView.vue'),
   },
   {
+    path: '/listTransf',
+    name: 'listTransf',
+    component: () => import(/* webpackChunkName: "user" */ '../views/transferidos/ListTransferidosView.vue'),
+  },
+  {
     path: '/modelo/:id',
     name: 'modelo',
     component: () => import(/* webpackChunkName: "user" */ '../views/manutencao/ModeloView.vue'),
